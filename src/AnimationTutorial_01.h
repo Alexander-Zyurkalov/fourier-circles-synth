@@ -56,6 +56,7 @@ public:
     MainContentComponent()
     {
         setSize (800, 600);
+        setFramesPerSecond(60);
     }
 
     void update() override
@@ -68,6 +69,14 @@ public:
     {
         // (Our component is opaque, so we must completely fill the background with a solid colour)
         g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+        g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));       // [2]
+
+        int radius = 150;                                                        // [3]
+
+        juce::Point<float> p (getWidth()  / 2.0f + 1.0f * radius,
+                              getHeight() / 2.0f + 1.0f * radius);               // [4]
+
+        g.fillEllipse (p.x, p.y, 30.0f, 30.0f);
     }
 
     void resized() override
