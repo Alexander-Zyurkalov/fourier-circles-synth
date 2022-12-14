@@ -68,18 +68,34 @@ public:
 
     void paint (juce::Graphics& g) override
     {
-        // (Our component is opaque, so we must completely fill the background with a solid colour)
-        // (Our component is opaque, so we must completely fill the background with a solid colour)
+//        / // (Our component is opaque, so we must completely fill the background with a solid colour)
         g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
 
-        int radius = 150;
+        auto numberOfDots = 15;     // [1]
 
-        juce::Point<float> p ((float) getWidth()  / 2.0f + 1.0f * (float) radius * std::sin ((float) getFrameCounter() * 0.04f),
-                              (float) getHeight() / 2.0f + 1.0f * (float) radius * std::cos ((float) getFrameCounter() * 0.04f));
+        juce::Path spinePath;       // [2]
 
-        g.fillEllipse (p.x, p.y, 30.0f, 30.0f);
+        for (auto i = 0; i < numberOfDots; ++i) // [3]
+        {
+            int radius = 150;
+
+            juce::Point<float> p (
+                    (float) getWidth()  / 2.0f + 1.0f * (float) radius *
+                    std::sin ((float) getFrameCounter() * 0.04f + (float) i * 0.12f),
+
+                    (float) getHeight() / 2.0f + 1.0f * (float) radius *
+                    std::cos ((float) getFrameCounter() * 0.04f + (float) i * 0.12f));
+
+            if (i == 0)
+                spinePath.startNewSubPath (p);  // if this is the first point, start a new path..
+            else
+                spinePath.lineTo (p);           // ...otherwise add the next point
+        }
+
+        // draw an outline around the path that we have created
+        g.strokePath (spinePath, juce::PathStrokeType (4.0f)); // [4]
     }
 
     void resized() override
