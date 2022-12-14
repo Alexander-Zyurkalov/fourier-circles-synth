@@ -1,1 +1,4 @@
-add_executable(main main.cpp)
+target_sources(FourierCirclesSynth
+    PRIVATE
+        main.cpp
+)
