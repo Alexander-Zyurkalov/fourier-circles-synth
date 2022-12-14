@@ -7,7 +7,7 @@
 */
 
 
-#include "AnimationTutorial_01.h"
+#include "AnimationTutorial.h"
 
 class Application    : public juce::JUCEApplication
 {
