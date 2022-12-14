@@ -79,10 +79,10 @@ public:
 
         for (auto i = 0; i < fishLength; ++i)
         {
-            int radius = 150;
+            auto radius = 100 + 10 * std::sin (getFrameCounter() * 0.1f + i * 0.5f);
 
-            juce::Point<float> p (getWidth()  / 2.0f + 1.0f * radius * std::sin (getFrameCounter() * 0.04f + i * 0.12f),
-                                  getHeight() / 2.0f + 1.0f * radius * std::cos (getFrameCounter() * 0.04f + i * 0.12f));
+            juce::Point<float> p (getWidth()  / 2.0f + 1.5f * radius * std::sin (getFrameCounter() * 0.02f + i * 0.12f),
+                                  getHeight() / 2.0f + 1.0f * radius * std::cos (getFrameCounter() * 0.04f + i * 0.12f)); // [3]
 
             // draw the circles along the fish
             g.fillEllipse (p.x - i, p.y - i, 2.0f + 2.0f * i, 2.0f + 2.0f * i); // [1]
