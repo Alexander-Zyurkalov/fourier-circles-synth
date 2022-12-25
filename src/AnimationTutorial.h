@@ -50,6 +50,7 @@
 #include <juce_core/juce_core.h>
 #include <juce_dsp/juce_dsp.h>
 #include "gui/FourierCircle.h"
+#define NUMBER_OF_CIRCLES = 7;
 
 //==============================================================================
 class MainContentComponent   : public juce::AnimatedAppComponent
@@ -66,11 +67,14 @@ public:
     {
         // This function is called at the frequency specified by the setFramesPerSecond() call
         // in the constructor. You can use it to update counters, animate values, etc.
-        rad += juce::MathConstants<float>::pi /(float)frameRate;
-        if (rad > juce::MathConstants<float>::pi )
-            rad = -juce::MathConstants<float>::pi;
-        y = juce::dsp::FastMathApproximations::sin(rad);
-        x = juce::dsp::FastMathApproximations::cos(rad);
+
+        for(int i = 0; i < 7; i++) {
+            rad[i] += 0.3f*float(i+1) * 2*juce::MathConstants<float>::pi /(float)frameRate;
+            if (rad[i] > juce::MathConstants<float>::pi )
+                rad[i] = -juce::MathConstants<float>::pi;
+            y[i] = juce::dsp::FastMathApproximations::sin(rad[i]);
+            x[i] = juce::dsp::FastMathApproximations::cos(rad[i]);
+        }
     }
 
     void paint (juce::Graphics& g) override
@@ -80,10 +84,10 @@ public:
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
 
         FourierCircle* prevCircle{nullptr};
-        for(int i=0; i< 5; ++i) {
+        for(int i=0; i< 7; ++i) {
             FourierCircle fourierCircle{prevCircle, getWidth(), getHeight(),
-                                        x,
-                                        y, 1.0f/((float)i+1.0f)};
+                                        x[i],
+                                        y[i], 1.0f/((float)i+1.0f)};
             fourierCircle.paint(g);
             delete prevCircle;
             prevCircle = new FourierCircle{fourierCircle};
@@ -99,7 +103,9 @@ public:
     }
 
 private:
-    float rad = 0.0f, y = 0.0f, x = 0.0f;
+
+    std::array<float, 7> rad{};
+    std::array<float, 7> x{}, y{};
     int frameRate = 60;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
