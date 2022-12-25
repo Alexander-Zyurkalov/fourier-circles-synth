@@ -48,6 +48,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <juce_core/juce_core.h>
+#include <juce_dsp/juce_dsp.h>
 #include "gui/FourierCircle.h"
 
 //==============================================================================
@@ -66,9 +67,10 @@ public:
         // This function is called at the frequency specified by the setFramesPerSecond() call
         // in the constructor. You can use it to update counters, animate values, etc.
         rad += juce::MathConstants<float>::pi / 60;
-        rad = fmod(rad, 2 * juce::MathConstants<float>::pi);
-        y = std::sin(rad);
-        x = std::cos(rad);
+        if (rad > juce::MathConstants<float>::pi )
+            rad = -juce::MathConstants<float>::pi;
+        y = juce::dsp::FastMathApproximations::sin(rad);
+        x = juce::dsp::FastMathApproximations::cos(rad);
     }
 
     void paint (juce::Graphics& g) override
