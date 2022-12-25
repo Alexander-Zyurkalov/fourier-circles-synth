@@ -65,7 +65,9 @@ public:
     {
         // This function is called at the frequency specified by the setFramesPerSecond() call
         // in the constructor. You can use it to update counters, animate values, etc.
-
+        x+=juce::MathConstants<float>::pi/60;
+        x = fmod(x, 2 * juce::MathConstants<float>::pi);
+        y = std::sin(x);
     }
 
     void paint (juce::Graphics& g) override
@@ -75,7 +77,9 @@ public:
 
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
 
-        FourierCircle fourierCircle{nullptr, getWidth(), getHeight(), 0, 0, 1};
+        FourierCircle fourierCircle{nullptr, getWidth(), getHeight(),
+                                    std::cos(x),
+                                    y, 1};
         fourierCircle.paint(g);
     }
 
@@ -87,6 +91,7 @@ public:
     }
 
 private:
+    float x,y;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };

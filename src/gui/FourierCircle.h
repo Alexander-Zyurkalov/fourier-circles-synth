@@ -9,10 +9,11 @@ private:
     float radius;
     juce::Point<float> center, pointOnArc;
     juce::Rectangle<float> plotArea;
+    juce::Line<float> line;
 public:
     FourierCircle() = delete;
 
-    FourierCircle(FourierCircle const* prevCircle, int windowWidth, int windowHeight,
+    FourierCircle(const FourierCircle* const prevCircle , int windowWidth, int windowHeight,
                   float deltaX, float deltaY, float amplitude);
 
     void paint(juce::Graphics& g);

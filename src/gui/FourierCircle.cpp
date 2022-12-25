@@ -5,7 +5,7 @@
 #include "FourierCircle.h"
 
 FourierCircle::FourierCircle(
-        const FourierCircle *prevCircle, int windowWidth, int windowHeight,
+        const FourierCircle* const prevCircle, int windowWidth, int windowHeight,
         float deltaX, float deltaY, float amplitude)
 {
     radius = (float)std::min(windowWidth, windowHeight)/10.0f * amplitude;
@@ -17,11 +17,14 @@ FourierCircle::FourierCircle(
     plotArea.setTop(center.getY() - radius);
     plotArea.setRight(center.getX() + radius);
     plotArea.setBottom(center.getY() + radius);
+    line.setStart(center);
+    line.setEnd(pointOnArc);
 }
 
 void FourierCircle::paint(juce::Graphics &g) {
     g.setColour (juce::Colours::yellow);
     g.drawEllipse(plotArea, 1);
+    g.drawLine(line);
 }
 
 const juce::Point<float> &FourierCircle::getPointOnArc() const {
