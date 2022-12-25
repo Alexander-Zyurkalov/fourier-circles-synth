@@ -80,10 +80,10 @@ public:
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
 
         FourierCircle* prevCircle{nullptr};
-        for(int i=0; i< 2; ++i) {
+        for(int i=0; i< 5; ++i) {
             FourierCircle fourierCircle{prevCircle, getWidth(), getHeight(),
                                         x,
-                                        y, 1};
+                                        y, 1.0f/((float)i+1.0f)};
             fourierCircle.paint(g);
             delete prevCircle;
             prevCircle = new FourierCircle{fourierCircle};

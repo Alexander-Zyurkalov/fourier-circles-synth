@@ -10,8 +10,9 @@ FourierCircle::FourierCircle(
 {
     radius = (float)std::min(windowWidth, windowHeight)/10.0f * amplitude;
     center.setXY((float)windowWidth/2.0f, (float)windowHeight/2.0f);
-    if (prevCircle != nullptr)
+    if (prevCircle != nullptr) {
         center = prevCircle->getPointOnArc();
+    }
     pointOnArc = center.translated(deltaX * radius, deltaY * radius);
     plotArea.setLeft(center.getX() - radius);
     plotArea.setTop(center.getY() - radius);
