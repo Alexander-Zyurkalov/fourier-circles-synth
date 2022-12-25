@@ -85,12 +85,12 @@ public:
 
         FourierCircle* prevCircle{nullptr};
         for(int i=0; i< 7; ++i) {
-            FourierCircle fourierCircle{prevCircle, getWidth(), getHeight(),
+            auto* fourierCircle = new FourierCircle{prevCircle, getWidth(), getHeight(),
                                         x[i],
                                         y[i], 1.0f/((float)i+1.0f)};
-            fourierCircle.paint(g);
+            fourierCircle->paint(g);
             delete prevCircle;
-            prevCircle = new FourierCircle{fourierCircle};
+            prevCircle = fourierCircle;
         }
         delete prevCircle;
     }
