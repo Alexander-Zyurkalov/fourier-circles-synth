@@ -77,13 +77,18 @@ public:
     {
 //        / // (Our component is opaque, so we must completely fill the background with a solid colour)
         g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
 
-        FourierCircle fourierCircle{nullptr, getWidth(), getHeight(),
-                                    x,
-                                    y, 1};
-        fourierCircle.paint(g);
+        FourierCircle* prevCircle{nullptr};
+        for(int i=0; i< 2; ++i) {
+            FourierCircle fourierCircle{prevCircle, getWidth(), getHeight(),
+                                        x,
+                                        y, 1};
+            fourierCircle.paint(g);
+            delete prevCircle;
+            prevCircle = new FourierCircle{fourierCircle};
+        }
+        delete prevCircle;
     }
 
     void resized() override
