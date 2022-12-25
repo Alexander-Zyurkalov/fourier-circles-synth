@@ -59,14 +59,14 @@ public:
     MainContentComponent()
     {
         setSize (800, 600);
-        setFramesPerSecond(60);
+        setFramesPerSecond(frameRate);
     }
 
     void update() override
     {
         // This function is called at the frequency specified by the setFramesPerSecond() call
         // in the constructor. You can use it to update counters, animate values, etc.
-        rad += juce::MathConstants<float>::pi / 60;
+        rad += juce::MathConstants<float>::pi /(float)frameRate;
         if (rad > juce::MathConstants<float>::pi )
             rad = -juce::MathConstants<float>::pi;
         y = juce::dsp::FastMathApproximations::sin(rad);
@@ -99,7 +99,8 @@ public:
     }
 
 private:
-    float rad,y, x;
+    float rad = 0.0f, y = 0.0f, x = 0.0f;
+    int frameRate = 60;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
