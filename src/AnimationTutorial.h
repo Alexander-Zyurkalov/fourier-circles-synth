@@ -69,9 +69,10 @@ public:
         // in the constructor. You can use it to update counters, animate values, etc.
 
         for(int i = 0; i < 7; i++) {
-            phase[i] += 0.3f * float(i + 1) * 2 * juce::MathConstants<float>::pi / (float)frameRate;
+            float w = 0.3f * float(i + 1) * 2 * juce::MathConstants<float>::pi / (float) frameRate;
+            phase[i] += w;
             if (phase[i] > juce::MathConstants<float>::pi )
-                phase[i] = -juce::MathConstants<float>::pi;
+                phase[i] -= 2 * juce::MathConstants<float>::pi;
             y[i] = juce::dsp::FastMathApproximations::sin(phase[i]);
             x[i] = juce::dsp::FastMathApproximations::cos(phase[i]);
         }
