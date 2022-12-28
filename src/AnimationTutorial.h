@@ -8,23 +8,30 @@
 #include <juce_core/juce_core.h>
 #include <juce_dsp/juce_dsp.h>
 #include "gui/FourierCircle.h"
+#include "gui/Harmonics.h"
 
 //==============================================================================
-class MainContentComponent   : public juce::AnimatedAppComponent
+class MainContentComponent   : public juce::AnimatedAppComponent,
+                               public juce::Button::Listener
 {
 public:
+    void buttonClicked(juce::Button *button) override {
+        Harmonics harmonics{};
+        harmonics.perform();
+    }
+
     //==============================================================================
     MainContentComponent()
     {
         setSize (800, 600);
         setFramesPerSecond(frameRate);
+        myButton.setBounds(10, 10, 100, 40);
+        myButton.addListener(this);
+        addAndMakeVisible(myButton);
     }
 
     void update() override
     {
-        // This function is called at the frequency specified by the setFramesPerSecond() call
-        // in the constructor. You can use it to update counters, animate values, etc.
-
         for(int i = 0; i < 7; i++) {
             float w = 0.3f * float(i + 1) * 2 * juce::MathConstants<float>::pi / (float) frameRate;
             phase[i] += w;
@@ -37,6 +44,8 @@ public:
 
     void paint (juce::Graphics& g) override
     {
+
+
 //        / // (Our component is opaque, so we must completely fill the background with a solid colour)
         g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
         g.setColour (getLookAndFeel().findColour (juce::Slider::thumbColourId));
@@ -61,7 +70,7 @@ public:
     }
 
 private:
-
+    juce::TextButton myButton{"Click"};
     std::array<float, 7> phase{};
     std::array<float, 7> x{}, y{};
     int frameRate = 60;
