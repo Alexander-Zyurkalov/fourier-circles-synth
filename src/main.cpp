@@ -8,6 +8,8 @@
 
 
 #include "AnimationTutorial.h"
+#include "gui/SpectrumAnalyserWindow.h"
+#include "gui/SpectrumAnalyserComponent.h"
 
 class Application    : public juce::JUCEApplication
 {
@@ -21,9 +23,15 @@ public:
     void initialise (const juce::String&) override
     {
         mainWindow.reset (new MainWindow ("AnimationTutorial", new MainContentComponent, *this));
+        spectrumAnalyserWindow.reset (
+                new SpectrumAnalyserWindow ("Spectrum", new AnalyserComponent, *this));
     }
 
-    void shutdown() override                         { mainWindow = nullptr; }
+    void shutdown() override
+    {
+        mainWindow = nullptr;
+        spectrumAnalyserWindow = nullptr;
+    }
 
 private:
     class MainWindow    : public juce::DocumentWindow
@@ -62,6 +70,7 @@ private:
     };
 
     std::unique_ptr<MainWindow> mainWindow;
+    std::unique_ptr<SpectrumAnalyserWindow> spectrumAnalyserWindow;
 };
 
 //==============================================================================

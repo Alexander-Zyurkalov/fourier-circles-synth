@@ -13,6 +13,9 @@ target_link_libraries(FourierCirclesSynth
             juce::juce_gui_basics
             juce::juce_gui_extra
             juce::juce_dsp
+            juce::juce_audio_basics
+            juce::juce_audio_devices
+            juce::juce_audio_utils
         )
 add_subdirectory(src)
 target_compile_definitions(FourierCirclesSynth
