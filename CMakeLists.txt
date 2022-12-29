@@ -30,4 +30,15 @@ add_subdirectory(libs/Catch2)
 add_executable(tests tests/tests.cpp)
 target_link_libraries(tests
         PRIVATE
-        Catch2::Catch2WithMain)
+            Catch2::Catch2WithMain
+            juce::juce_core
+            juce::juce_data_structures
+            juce::juce_events
+            juce::juce_graphics
+            juce::juce_gui_basics
+            juce::juce_gui_extra
+            juce::juce_dsp
+            juce::juce_audio_basics
+            juce::juce_audio_devices
+            juce::juce_audio_utils
+)
