@@ -25,3 +25,9 @@ target_compile_definitions(FourierCirclesSynth
             JUCE_APPLICATION_NAME_STRING="Geometric Median"
             JUCE_APPLICATION_VERSION="0.0.1"
         )
+add_subdirectory(libs/Catch2)
+
+add_executable(tests tests/tests.cpp)
+target_link_libraries(tests
+        PRIVATE
+        Catch2::Catch2WithMain)
