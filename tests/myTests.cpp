@@ -16,3 +16,8 @@ TEST_CASE("Learning roundToInt"){
     int myInt = juce::roundToInt(myFloat);
     REQUIRE(myInt == 4);
 }
+
+TEST_CASE("Learning nextPowerOfTwo") {
+    auto nextPowerOfTwo = juce::nextPowerOfTwo(66);
+    REQUIRE(nextPowerOfTwo == 128);
+}
