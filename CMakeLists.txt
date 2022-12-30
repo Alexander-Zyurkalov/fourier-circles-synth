@@ -27,7 +27,7 @@ target_compile_definitions(FourierCirclesSynth
         )
 add_subdirectory(libs/Catch2)
 
-add_executable(tests tests/tests.cpp)
+add_executable(tests tests/myTests.cpp)
 target_link_libraries(tests
         PRIVATE
             Catch2::Catch2WithMain
