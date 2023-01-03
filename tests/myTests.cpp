@@ -2,6 +2,7 @@
 #include <juce_core/juce_core.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <catch2/catch_approx.hpp>
+#include <juce_dsp/juce_dsp.h>
 
 TEST_CASE("Learning how jmap is working") {
     float phase = juce::MathConstants<float>::pi/2;
@@ -48,4 +49,33 @@ TEST_CASE("Learning FFT") {
 
 
 
+}
+
+
+TEST_CASE("Learning oscillators") {
+
+    juce::dsp::ProcessSpec processSpec{};
+    processSpec.sampleRate = 44100.0f;
+    processSpec.numChannels = 1;
+    processSpec.maximumBlockSize = 1024;
+
+
+
+    const std::function <float(float)> mySine{
+            []( const auto &x) {
+                return std::sin(x);
+            }
+    };
+
+    juce::dsp::Oscillator<float> oscillator{mySine, 100};
+    oscillator.setFrequency(440);
+    REQUIRE(oscillator.isInitialised());
+
+    oscillator.prepare(processSpec);
+    float phase = - juce::MathConstants<float>::pi;
+    for (int i = 0; i < 100; ++i) {
+        float y = oscillator.processSample(0);
+        REQUIRE(y == Catch::Approx(std::sin(phase)).epsilon(0.001));
+        phase += juce::MathConstants<float>::twoPi * oscillator.getFrequency()/processSpec.sampleRate;
+    }
 }
