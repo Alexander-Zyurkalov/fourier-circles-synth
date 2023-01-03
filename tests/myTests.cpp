@@ -73,9 +73,28 @@ TEST_CASE("Learning oscillators") {
 
     oscillator.prepare(processSpec);
     float phase = - juce::MathConstants<float>::pi;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < processSpec.maximumBlockSize; ++i) {
         float y = oscillator.processSample(0);
-        REQUIRE(y == Catch::Approx(std::sin(phase)).epsilon(0.001));
+        REQUIRE(y == Catch::Approx(std::sin(phase)).margin(0.004));
         phase += juce::MathConstants<float>::twoPi * oscillator.getFrequency()/processSpec.sampleRate;
+        if (phase > juce::MathConstants<float>::pi)
+            phase -= juce::MathConstants<float>::twoPi;
     }
+
+    oscillator.reset();
+
+    juce::AudioBuffer<float> audioBuffer{1, (int)processSpec.maximumBlockSize};
+    juce::dsp::AudioBlock<float> audioBlock{audioBuffer};
+    juce::dsp::ProcessContextReplacing<float> context{audioBlock};
+    oscillator.process(context);
+    phase = - juce::MathConstants<float>::pi;
+    for (int i = 0; i < processSpec.maximumBlockSize; ++i) {
+        float y = audioBlock.getSample(0, i);
+        REQUIRE(y == Catch::Approx(std::sin(phase)).margin(0.004));
+        phase += juce::MathConstants<float>::twoPi * oscillator.getFrequency()/processSpec.sampleRate;
+        if (phase > juce::MathConstants<float>::pi)
+            phase -= juce::MathConstants<float>::twoPi;
+    }
+
+
 }
