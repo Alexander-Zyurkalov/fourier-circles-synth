@@ -34,3 +34,18 @@ TEST_CASE("Learning decibelsToGain"){
     gain = juce::Decibels::decibelsToGain<float>(20);
     REQUIRE(gain == Catch::Approx(10.0f));
 }
+
+/**
+ *  1. Generate a wave
+ *  2. Use FFT function on it
+ *  3. Reproduce the wave from the FFT
+ *  4. Compare the waves.
+ */
+
+TEST_CASE("Learning FFT") {
+    int fftOrder  = 11;
+    int fftSize   = 1 << fftOrder;
+
+
+
+}
