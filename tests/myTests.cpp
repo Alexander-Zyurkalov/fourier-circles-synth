@@ -1,5 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <juce_core/juce_core.h>
+#include <juce_audio_basics/juce_audio_basics.h>
+#include <catch2/catch_approx.hpp>
 
 TEST_CASE("Learning how jmap is working") {
     float phase = juce::MathConstants<float>::pi/2;
@@ -20,4 +22,15 @@ TEST_CASE("Learning roundToInt"){
 TEST_CASE("Learning nextPowerOfTwo") {
     auto nextPowerOfTwo = juce::nextPowerOfTwo(66);
     REQUIRE(nextPowerOfTwo == 128);
+}
+
+TEST_CASE("Learning decibelsToGain"){
+    auto gain = juce::Decibels::decibelsToGain<float>(0);
+    REQUIRE(gain == 1.0f);
+
+    gain = juce::Decibels::decibelsToGain<float>(10);
+    REQUIRE(gain == Catch::Approx(3.16228f));
+
+    gain = juce::Decibels::decibelsToGain<float>(20);
+    REQUIRE(gain == Catch::Approx(10.0f));
 }
