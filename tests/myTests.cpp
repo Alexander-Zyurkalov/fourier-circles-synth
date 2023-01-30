@@ -47,7 +47,25 @@ TEST_CASE("Learning FFT") {
     int fftOrder  = 11;
     int fftSize   = 1 << fftOrder;
 
+    const std::function <float(float)> mySine{
+            []( const auto &x) {
+                return std::sin(x);
+            }
+    };
 
+    juce::dsp::Oscillator<float> oscillator{mySine};
+    oscillator.setFrequency(440);
+
+    juce::dsp::ProcessSpec processSpec{};
+    processSpec.sampleRate = 44100.0f;
+    processSpec.numChannels = 1;
+    processSpec.maximumBlockSize = 44100; //for one second
+    oscillator.prepare(processSpec);
+
+
+    juce::AudioBuffer<float> buffer{(int)processSpec.numChannels, (int) processSpec.maximumBlockSize};
+
+    //TODO: my question is what does FFT return? Frequency? Phase? Amplitude?
 
 }
 
