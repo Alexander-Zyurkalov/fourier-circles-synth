@@ -94,8 +94,11 @@ TEST_CASE("Learning FFT") {
 
         auto skewedProportionX = 1.0f - std::exp (std::log (1.0f - (float) i / (float) scopeSize) * 0.2f);
         auto fftDataIndex = juce::jlimit (0, fftSize / 2, (int) (skewedProportionX * (float) fftSize * 0.5f));
-        float dcb = juce::jlimit(mindB, maxdB, juce::Decibels::gainToDecibels(fftData[fftDataIndex])
-                                               - juce::Decibels::gainToDecibels((float) fftSize));
+        float dcb = juce::jlimit(
+                mindB,
+                maxdB,
+                juce::Decibels::gainToDecibels(fftData[fftDataIndex]) - juce::Decibels::gainToDecibels((float) fftSize)
+                );
         auto level = juce::jmap (dcb, mindB, maxdB, 0.0f, 1.0f);
         auto frequency = juce::jmap<float>((float)fftDataIndex, 0, scopeSize, 0, processSpec.sampleRate/2);
         std::cout << frequency  << "\t" << level << std::endl;
