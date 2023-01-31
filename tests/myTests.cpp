@@ -86,8 +86,18 @@ TEST_CASE("Learning FFT") {
     window.multiplyWithWindowingTable(fftData, fftSize);
     forwardFFT.performFrequencyOnlyForwardTransform(fftData, false);
 
-    for (size_t i = 0; i < fftSize; ++i) {
-        std::cout << fftData[i] << std::endl;
+
+    auto mindB = -100.0f;
+    auto maxdB =    0.0f;
+    auto scopeSize = fftSize/2;
+    for (size_t i = 0; i < scopeSize; ++i) {
+
+        auto skewedProportionX = 1.0f - std::exp (std::log (1.0f - (float) i / (float) scopeSize) * 0.2f);
+        auto fftDataIndex = juce::jlimit (0, fftSize / 2, (int) (skewedProportionX * (float) fftSize * 0.5f));
+        auto level = juce::jmap (juce::jlimit (mindB, maxdB, juce::Decibels::gainToDecibels (fftData[fftDataIndex])
+                                                             - juce::Decibels::gainToDecibels ((float) fftSize)),
+                                 mindB, maxdB, 0.0f, 1.0f);
+        std::cout << level << std::endl;
     }
 
 }
