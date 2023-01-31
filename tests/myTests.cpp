@@ -77,8 +77,17 @@ TEST_CASE("Learning FFT") {
         phase += juce::MathConstants<float>::twoPi * oscillator.getFrequency()/processSpec.sampleRate;
     }
 
+    juce::dsp::WindowingFunction<float> window (fftSize, juce::dsp::WindowingFunction<float>::hann);
+    float fftData[2 * fftSize];
+    juce::zeromem (fftData, sizeof (fftData));
+    memcpy (fftData, audioBlock.getChannelPointer(0), fftSize);
+    juce::dsp::FFT forwardFFT{fftOrder};
 
-//    juce::dsp::FFT forwardFFT;
+    window.multiplyWithWindowingTable(fftData, fftSize);
+    forwardFFT.performFrequencyOnlyForwardTransform(fftData, false);
 
+    for (size_t i = 0; i < fftSize; ++i) {
+        std::cout << fftData[i] << std::endl;
+    }
 
 }
