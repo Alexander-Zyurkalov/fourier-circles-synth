@@ -44,8 +44,8 @@ TEST_CASE("Learning decibelsToGain"){
  */
 
 TEST_CASE("Learning FFT") {
-    int fftOrder  = 11;
-    int fftSize   = 1 << fftOrder;
+    constexpr auto fftOrder = 10;
+    constexpr auto fftSize  = 1 << fftOrder;
 
     const std::function <float(float)> mySine{
             []( const auto &x) {
@@ -59,51 +59,26 @@ TEST_CASE("Learning FFT") {
     juce::dsp::ProcessSpec processSpec{};
     processSpec.sampleRate = 44100.0f;
     processSpec.numChannels = 1;
-    processSpec.maximumBlockSize = 44100; //for one second
+    processSpec.maximumBlockSize = fftSize;
     oscillator.prepare(processSpec);
 
 
     juce::AudioBuffer<float> buffer{(int)processSpec.numChannels, (int) processSpec.maximumBlockSize};
-
-    //TODO: my question is what does FFT return? Frequency? Phase? Amplitude?
-
-}
-
-
-TEST_CASE("Learning oscillators") {
-
-    juce::dsp::ProcessSpec processSpec{};
-    processSpec.sampleRate = 44100.0f;
-    processSpec.numChannels = 1;
-    processSpec.maximumBlockSize = 1024;
-
-
-
-    const std::function <float(float)> mySine{
-            []( const auto &x) {
-                return std::sin(x);
-            }
-    };
-
-    juce::dsp::Oscillator<float> oscillator{mySine, 100};
-    oscillator.setFrequency(440);
-    REQUIRE(oscillator.isInitialised());
-
-    oscillator.prepare(processSpec);
-
-    juce::AudioBuffer<float> buffer{1, (int)processSpec.maximumBlockSize};
-    buffer.clear();
     juce::dsp::AudioBlock<float> audioBlock{buffer};
+    audioBlock.clear();
     juce::dsp::ProcessContextReplacing<float> context{audioBlock};
+
     oscillator.process(context);
     float phase = - juce::MathConstants<float>::pi;
     for (int i = 0; i < processSpec.maximumBlockSize/2; ++i) {
         float y = audioBlock.getSample(0, i);
         REQUIRE(y == Catch::Approx(std::sin(phase)).margin(0.004));
+//        std::cout << phase << "\t" << y << std::endl;
         phase += juce::MathConstants<float>::twoPi * oscillator.getFrequency()/processSpec.sampleRate;
-        if (phase > juce::MathConstants<float>::pi)
-            phase -= juce::MathConstants<float>::twoPi;
     }
+
+
+//    juce::dsp::FFT forwardFFT;
 
 
 }
