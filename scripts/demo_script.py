@@ -17,4 +17,20 @@ def sine_wave_demo():
     plt.show()  # display the figure
 
 
-sine_wave_demo()
+def square_wave_demo():
+    import numpy as np
+    import matplotlib.pyplot as plt  # library for plotting
+    from signalgen import square_wave  # import the function
+    f = 10  # frequency = 10 Hz
+    over_samp_rate = 30  # oversammpling rate
+    phase = 1 / 3 * np.pi  # phase shift in radians
+    n_cyl = 5  # desired number of cycles of the sine wave
+    (t, g) = square_wave(f, over_samp_rate, phase, n_cyl)  # function call
+    plt.plot(t, g)  # plot using pyplot library from matplotlib package
+    plt.title('Squire wave f=' + str(f) + 'Hz')  # plot title
+    plt.xlabel('Time (s)')  # x-axis label
+    plt.ylabel('Amplitude')  # y-axis label
+    plt.show()  # display the figure
+
+
+square_wave_demo()
