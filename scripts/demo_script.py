@@ -33,4 +33,15 @@ def square_wave_demo():
     plt.show()  # display the figure
 
 
-square_wave_demo()
+def chirp_demo():
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from scipy.signal import chirp
+    fs = 500
+    t = np.arange(start=0, stop=1, step=1 / fs)
+    g = chirp(t, f0=1, t1=0.1, f1=20, phi=0, method="linear")
+    plt.plot(t, g)
+    plt.show()
+
+
+chirp_demo()
