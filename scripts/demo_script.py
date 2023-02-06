@@ -1,5 +1,3 @@
-
-
 def sine_wave_demo():
     """
     Simulate a sinusoidal signal with given sampling rate
@@ -57,4 +55,21 @@ def show_my_dft():
     plt.show()
 
 
-show_my_dft()
+def show_their_dft():
+    from scipy.fftpack import fft, ifft
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from signalgen import cosine_wave
+    np.set_printoptions(formatter={"float_kind": lambda x: "%g" % x})
+
+    fc = 10  # frequency of the carrier
+    (t, x) = cosine_wave(fc, 32, 0, 20)  # 2 seconds
+    fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1)
+    ax1.plot(t, x)  # plot the signal
+    ax1.set_title('$x[n]= cos(2 \pi 10 t)$')
+    ax1.set_xlabel('$t=nT_s$')
+    ax1.set_ylabel('$x[n]$')
+    plt.show()
+
+
+show_their_dft()
