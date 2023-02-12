@@ -87,6 +87,7 @@ def show_their_dft():
     ax3.set_xlabel('frequencies (f)')
     ax3.set_ylabel('|X(f)|')
 
+    plt.tight_layout()
     plt.show()
 
 
