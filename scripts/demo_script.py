@@ -63,12 +63,30 @@ def show_their_dft():
     np.set_printoptions(formatter={"float_kind": lambda x: "%g" % x})
 
     fc = 10  # frequency of the carrier
-    (t, x) = cosine_wave(fc, 32, 0, 20)  # 2 seconds
+    over_sampling_rate = 32
+    fs = fc * over_sampling_rate
+    (t, x) = cosine_wave(fc, over_sampling_rate, 0, 20)  # 2 seconds
     fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, ncols=1)
     ax1.plot(t, x)  # plot the signal
     ax1.set_title('$x[n]= cos(2 \pi 10 t)$')
     ax1.set_xlabel('$t=nT_s$')
     ax1.set_ylabel('$x[n]$')
+
+    N = 256
+    X = fft(x, N)
+
+    df = fs / N
+    sampleIndex = np.arange(start=0, stop=N)
+    f = sampleIndex * df
+    ax2.stem(sampleIndex, abs(X), use_line_collection=True)  # sample values on x-axis
+    ax2.set_title('X[k]')
+    ax2.set_xlabel('k')
+    ax2.set_ylabel('|X(k)|')
+    ax3.stem(f, abs(X), use_line_collection=True)  # x-axis represent frequencies
+    ax3.set_title('X[f]')
+    ax3.set_xlabel('frequencies (f)')
+    ax3.set_ylabel('|X(f)|')
+
     plt.show()
 
 
