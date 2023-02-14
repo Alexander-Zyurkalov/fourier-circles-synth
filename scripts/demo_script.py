@@ -121,6 +121,18 @@ def phase_and_amplitude():
 
     phase = np.arctan2(np.imag(X), np.real(X) * 180 / np.pi)
     ax3.plot(f, phase)
+
+    X2 = X
+    threshold = max(abs(X)) / 10000
+    X2[abs(X) < threshold] = 0
+    phase = np.arctan2(np.imag(X2), np.real(X2)) * 180 / np.pi  # phase information
+    ax4.stem(f, phase, use_line_collection=True)  # phase vs frequencies
+    ax4.set_xlim(-30, 30);
+    ax4.set_title('Phase spectrum')
+    ax4.set_ylabel(r"$\angle$ X[k]")
+    ax4.set_xlabel('f(Hz)')
+    fig.show()
+
     plt.tight_layout()
     plt.show()
 
