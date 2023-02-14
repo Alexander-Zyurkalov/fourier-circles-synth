@@ -105,8 +105,20 @@ def phase_and_amplitude():
     fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=4, ncols=1)
     ax1.plot(t, x)  # plot time domain representation
     ax1.set_title(r'$x(t) = 0.5 cos (2 \pi 10 t + \pi/6)$')
-    ax1.set_xlabel('time (t seconds)');
+    ax1.set_xlabel('time (t seconds)')
     ax1.set_ylabel('x(t)')
+
+    N = 256
+    X = 1 / N * fftshift(fft(x, N))
+    df = fs / N
+    sample_index = np.arange(start=-N // 2, stop=N // 2)
+    f = sample_index * df
+    ax2.stem(f, abs(X), use_line_collection=True)
+    ax2.set_xlim(-30, 30)
+    ax2.set_title('Amplitude spectrum')
+    ax2.set_xlabel('f (Hz)')
+    ax2.set_ylabel(r'$ \left| X(k) \right|$')
+
     plt.tight_layout()
     plt.show()
 
