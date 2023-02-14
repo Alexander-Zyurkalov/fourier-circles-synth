@@ -119,6 +119,8 @@ def phase_and_amplitude():
     ax2.set_xlabel('f (Hz)')
     ax2.set_ylabel(r'$ \left| X(k) \right|$')
 
+    phase = np.arctan2(np.imag(X), np.real(X) * 180 / np.pi)
+    ax3.plot(f, phase)
     plt.tight_layout()
     plt.show()
 
