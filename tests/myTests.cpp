@@ -124,6 +124,7 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
 
     Harmonics<float, float> harmonics(size, std::move(phases), std::move(amplitudes));
 
+    REQUIRE(phases == nullptr);
 
     SECTION("Test size") {
         REQUIRE(harmonics.getSize() == size);
