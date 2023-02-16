@@ -46,6 +46,7 @@ public:
         // then render our FFT data..
         forwardFFT.performFrequencyOnlyForwardTransform (fftData);  // [2]
 
+
         auto mindB = -100.0f;
         auto maxdB =    0.0f;
 

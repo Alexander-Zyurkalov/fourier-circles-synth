@@ -3,6 +3,7 @@
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <catch2/catch_approx.hpp>
 #include <juce_dsp/juce_dsp.h>
+#include "../src/gui/Harmonics.h"
 
 TEST_CASE("Learning how jmap is working") {
     float phase = juce::MathConstants<float>::pi/2;
@@ -104,4 +105,34 @@ TEST_CASE("Learning FFT") {
         std::cout << frequency  << "\t" << level << std::endl;
     }
 
+}
+
+
+
+TEST_CASE("Test Harmonics class", "[Harmonics]") {
+    size_t size = 3;
+    std::unique_ptr<float[]> phases(new float[size]);
+    std::unique_ptr<float[]> amplitudes(new float[size]);
+
+    phases[0] = 0.0f;
+    phases[1] = 0.5f;
+    phases[2] = 1.0f;
+
+    amplitudes[0] = 1.0f;
+    amplitudes[1] = 0.5f;
+    amplitudes[2] = 0.1f;
+
+    Harmonics<float, float> harmonics(size, std::move(phases), std::move(amplitudes));
+
+    SECTION("Test size") {
+        REQUIRE(harmonics.getSize() == size);
+    }
+
+    SECTION("Test getHarmonic method") {
+        Harmonic<float, float> harmonic = harmonics.getHarmonic(1);
+        REQUIRE(harmonic.getPhase() == 0.5f);
+        REQUIRE(harmonic.getAmplitude() == 0.5f);
+
+
+    }
 }

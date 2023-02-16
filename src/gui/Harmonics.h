@@ -1,8 +1,44 @@
 #include <juce_dsp/juce_dsp.h>
-class Harmonics {
+#pragma once
+
+template <typename PhaseType, typename AmplitudeType>
+class Harmonic {
 public:
-    void perform();
+    Harmonic(PhaseType& phase, AmplitudeType& amplitude)
+            : phase(phase), amplitude(amplitude)
+    {}
+
+    PhaseType &getPhase() const {
+        return phase;
+    }
+
+    AmplitudeType &getAmplitude() const {
+        return amplitude;
+    }
 
 private:
-    juce::dsp::FFT fft{10};
+    PhaseType& phase;
+    AmplitudeType& amplitude;
+};
+
+
+template <typename PhaseType, typename AmplitudeType>
+class Harmonics {
+public:
+    Harmonics(size_t size, std::unique_ptr<PhaseType[]> phases, std::unique_ptr<AmplitudeType[]> amplitudes)
+            : size(size), phases(std::move(phases)), amplitudes(std::move(amplitudes))
+    {}
+
+    Harmonic<PhaseType, AmplitudeType> getHarmonic(size_t index) {
+        return Harmonic<PhaseType, AmplitudeType>(*(phases.get() + index), *(amplitudes.get() + index));
+    }
+
+    size_t getSize() {
+        return size;
+    }
+
+private:
+    size_t size;
+    std::unique_ptr<PhaseType[]> phases;
+    std::unique_ptr<AmplitudeType[]>  amplitudes;
 };

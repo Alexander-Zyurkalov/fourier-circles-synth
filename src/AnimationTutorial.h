@@ -16,7 +16,7 @@ class MainContentComponent   : public juce::AnimatedAppComponent,
 {
 public:
     void buttonClicked(juce::Button *button) override {
-        Harmonics harmonics{};
+        Harmonics<float> harmonics{};
         harmonics.perform();
     }
 
