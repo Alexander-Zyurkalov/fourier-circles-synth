@@ -124,6 +124,7 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
 
     Harmonics<float, float> harmonics(size, std::move(phases), std::move(amplitudes));
 
+
     SECTION("Test size") {
         REQUIRE(harmonics.getSize() == size);
     }
@@ -132,6 +133,9 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
         Harmonic<float, float> harmonic = harmonics.getHarmonic(1);
         REQUIRE(harmonic.getPhase() == 0.5f);
         REQUIRE(harmonic.getAmplitude() == 0.5f);
+
+        harmonic.setAmplitude(1.33f);
+        harmonics.getHarmonic(1).getAmplitude() = harmonic.getAmplitude();
 
 
     }

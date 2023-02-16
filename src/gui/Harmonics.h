@@ -16,6 +16,14 @@ public:
         return amplitude;
     }
 
+    void setPhase(PhaseType phase) {
+        Harmonic::phase = phase;
+    }
+
+    void setAmplitude(AmplitudeType amplitude) {
+        Harmonic::amplitude = amplitude;
+    }
+
 private:
     PhaseType& phase;
     AmplitudeType& amplitude;
@@ -25,7 +33,7 @@ private:
 template <typename PhaseType, typename AmplitudeType>
 class Harmonics {
 public:
-    Harmonics(size_t size, std::unique_ptr<PhaseType[]> phases, std::unique_ptr<AmplitudeType[]> amplitudes)
+    Harmonics(size_t size, std::unique_ptr<PhaseType[]>&& phases, std::unique_ptr<AmplitudeType[]>&& amplitudes)
             : size(size), phases(std::move(phases)), amplitudes(std::move(amplitudes))
     {}
 
