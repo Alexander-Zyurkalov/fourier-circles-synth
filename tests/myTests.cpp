@@ -122,7 +122,12 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
     amplitudes[1] = 0.5f;
     amplitudes[2] = 0.1f;
 
-    Harmonics harmonics(size, std::move(phases), std::move(amplitudes));
+    juce::dsp::ProcessSpec processSpec{};
+    processSpec.sampleRate = 44100.0f;
+    processSpec.numChannels = 1;
+    processSpec.maximumBlockSize = 512;
+
+    Harmonics harmonics(size, std::move(phases), std::move(amplitudes), processSpec);
 
     REQUIRE(phases == nullptr);
 

@@ -1,4 +1,6 @@
 #include <juce_dsp/juce_dsp.h>
+#include <juce_core/juce_core.h>
+#include <juce_audio_basics/juce_audio_basics.h>
 #include <span>
 #pragma once
 
@@ -36,17 +38,28 @@ private:
 
 class Harmonics {
 public:
-    Harmonics(const size_t size, std::unique_ptr<float[]>&& phases, std::unique_ptr<float[]>&& amplitudes)
-            : size(size), phases(std::move(phases)),
-              amplitudes(std::move(amplitudes)),
-              x(std::make_unique<float[]>(size)),
-              y(std::make_unique<float[]>(size))
+    Harmonics(
+            const size_t size,
+            std::unique_ptr<float[]>&& phases,
+            std::unique_ptr<float[]>&& amplitudes,
+            juce::dsp::ProcessSpec processSpec
+    ) :
+            size(size), phases(std::move(phases)),
+            amplitudes(std::move(amplitudes)),
+            x(std::make_unique<float[]>(size)),
+            y(std::make_unique<float[]>(size)),
+            processSpec(processSpec)
     {
         calculate_xy();
     }
 
     [[nodiscard]] Harmonic getHarmonic(const size_t index) const {
-        return Harmonic{phases.get()[index], amplitudes.get()[index], x.get()[index], y.get()[index]};
+        return Harmonic{
+            phases.get()[index],
+            amplitudes.get()[index],
+            x.get()[index],
+            y.get()[index]
+        };
     }
 
     [[nodiscard]] size_t getSize() const {
@@ -69,6 +82,7 @@ private:
     const std::unique_ptr<float[]> phases;
     const std::unique_ptr<float[]> amplitudes;
     const std::unique_ptr<float[]> x, y;
+    const juce::dsp::ProcessSpec processSpec;
 
     void calculate_xy() {
         for (size_t i = 0; i <= size; ++i) {
