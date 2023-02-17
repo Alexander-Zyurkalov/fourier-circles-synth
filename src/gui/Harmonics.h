@@ -1,4 +1,5 @@
 #include <juce_dsp/juce_dsp.h>
+#include <span>
 #pragma once
 
 template <typename PhaseType, typename AmplitudeType>
@@ -14,14 +15,6 @@ public:
 
     const AmplitudeType &getAmplitude() const {
         return amplitude;
-    }
-
-    void setPhase(PhaseType phase) {
-        Harmonic::phase = phase;
-    }
-
-    void setAmplitude(AmplitudeType amplitude) {
-        Harmonic::amplitude = amplitude;
     }
 
 private:
@@ -44,6 +37,12 @@ public:
     size_t getSize() {
         return size;
     }
+
+    void rotate(PhaseType omega) {
+        std::span<PhaseType> phasesSpan{phases.get(), size};
+        std::for_each(phasesSpan.begin(), phasesSpan.end(), [omega](PhaseType& v){v+=omega;});
+    }
+
 
 private:
     size_t size;

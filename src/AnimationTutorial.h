@@ -16,8 +16,8 @@ class MainContentComponent   : public juce::AnimatedAppComponent,
 {
 public:
     void buttonClicked(juce::Button *button) override {
-        Harmonics<float> harmonics{};
-        harmonics.perform();
+        Harmonics<float, float> harmonics{5, std::make_unique<float[]>(5),  std::make_unique<float[]>(5)};
+        harmonics.rotate();
     }
 
     //==============================================================================

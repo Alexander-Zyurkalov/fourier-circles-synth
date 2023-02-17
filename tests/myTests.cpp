@@ -132,11 +132,14 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
 
     SECTION("Test getHarmonic method") {
         Harmonic<float, float> harmonic = harmonics.getHarmonic(1);
-        REQUIRE(harmonic.getPhase() == 0.5f);
+        float initialPhase = 0.5f;
+        REQUIRE(harmonic.getPhase() == initialPhase);
         REQUIRE(harmonic.getAmplitude() == 0.5f);
 
-        harmonic.setAmplitude(1.33f);
-        REQUIRE(harmonics.getHarmonic(1).getAmplitude() == harmonic.getAmplitude());
+        harmonics.rotate(0.1f);
+        REQUIRE(
+                (initialPhase + 0.1f) == Catch::Approx( harmonic.getPhase() )
+        );
 
 
     }
