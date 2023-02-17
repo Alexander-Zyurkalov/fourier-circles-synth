@@ -8,11 +8,11 @@ public:
             : phase(phase), amplitude(amplitude)
     {}
 
-    PhaseType &getPhase() const {
+    const PhaseType &getPhase() const {
         return phase;
     }
 
-    AmplitudeType &getAmplitude() const {
+    const AmplitudeType &getAmplitude() const {
         return amplitude;
     }
 

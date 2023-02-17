@@ -136,7 +136,7 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
         REQUIRE(harmonic.getAmplitude() == 0.5f);
 
         harmonic.setAmplitude(1.33f);
-        harmonics.getHarmonic(1).getAmplitude() = harmonic.getAmplitude();
+        REQUIRE(harmonics.getHarmonic(1).getAmplitude() == harmonic.getAmplitude());
 
 
     }
