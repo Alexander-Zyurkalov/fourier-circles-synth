@@ -140,6 +140,9 @@ TEST_CASE("Test Harmonics class", "[Harmonics]") {
         REQUIRE(
                 (initialPhase + 0.1f) == Catch::Approx( harmonic.getPhase() )
         );
+        REQUIRE(
+                (initialPhase + 0.1f) == Catch::Approx( harmonics.getHarmonic(1).getPhase() )
+        );
 
 
     }
