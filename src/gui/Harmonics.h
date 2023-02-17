@@ -4,8 +4,11 @@
 
 class Harmonic {
 public:
-    Harmonic(const float& phase, const float& amplitude)
-            : phase(phase), amplitude(amplitude)
+    Harmonic(
+            const float& phase, const float& amplitude,
+             const float& x, const float& y
+     ) :
+             phase(phase), amplitude(amplitude), x(x), y(y)
     {}
 
     [[nodiscard]] const float &getPhase() const {
@@ -16,21 +19,34 @@ public:
         return amplitude;
     }
 
+    [[nodiscard]] const float &getX() const {
+        return x;
+    }
+
+    [[nodiscard]] const float &getY() const {
+        return y;
+    }
+
 private:
     const float& phase;
     const float& amplitude;
+    const float &x;
+    const float &y;
 };
-
 
 class Harmonics {
 public:
     Harmonics(const size_t size, std::unique_ptr<float[]>&& phases, std::unique_ptr<float[]>&& amplitudes)
             : size(size), phases(std::move(phases)),
-              amplitudes(std::move(amplitudes))
-    {}
+              amplitudes(std::move(amplitudes)),
+              x(std::make_unique<float[]>(size)),
+              y(std::make_unique<float[]>(size))
+    {
+        calculate_xy();
+    }
 
     [[nodiscard]] Harmonic getHarmonic(const size_t index) const {
-        return Harmonic{*(phases.get() + index), *(amplitudes.get() + index)};
+        return Harmonic{phases.get()[index], amplitudes.get()[index], x.get()[index], y.get()[index]};
     }
 
     [[nodiscard]] size_t getSize() const {
@@ -39,11 +55,25 @@ public:
 
     void rotate(float omega) {
         std::span<float> phasesSpan{phases.get(), size};
-        std::for_each(phasesSpan.begin(), phasesSpan.end(), [omega](float& v){v+=omega;});
+        std::for_each(phasesSpan.begin(), phasesSpan.end(),
+                         [omega](float& phase){
+                                phase+=omega;
+                                if (phase > juce::MathConstants<float>::pi )
+                                    phase -= 2 * juce::MathConstants<float>::pi;
+                            });
+        calculate_xy();
     }
 
 private:
     const size_t size;
     const std::unique_ptr<float[]> phases;
     const std::unique_ptr<float[]> amplitudes;
+    const std::unique_ptr<float[]> x, y;
+
+    void calculate_xy() {
+        for (size_t i = 0; i <= size; ++i) {
+            x.get()[i] = juce::dsp::FastMathApproximations::cos(phases.get()[i]);
+            y.get()[i] = juce::dsp::FastMathApproximations::sin(phases.get()[i]);
+        }
+    }
 };

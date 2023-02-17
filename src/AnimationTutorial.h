@@ -16,8 +16,7 @@ class MainContentComponent   : public juce::AnimatedAppComponent,
 {
 public:
     void buttonClicked(juce::Button *button) override {
-        Harmonics harmonics{5, std::make_unique<float[]>(5),  std::make_unique<float[]>(5)};
-        harmonics.rotate(0.01f);
+
     }
 
     //==============================================================================
@@ -28,6 +27,8 @@ public:
         myButton.setBounds(10, 10, 100, 40);
         myButton.addListener(this);
         addAndMakeVisible(myButton);
+        harmonics = std::make_unique<Harmonics>(
+                7, std::make_unique<float[]>(7), std::make_unique<float[]>(7));
     }
 
     void update() override
@@ -74,6 +75,7 @@ private:
     std::array<float, 7> phase{};
     std::array<float, 7> x{}, y{};
     int frameRate = 60;
+    std::unique_ptr<Harmonics> harmonics;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
