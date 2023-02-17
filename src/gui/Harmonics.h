@@ -29,7 +29,7 @@ public:
               amplitudes(std::move(amplitudes))
     {}
 
-    Harmonic getHarmonic(const size_t index) {
+    [[nodiscard]] Harmonic getHarmonic(const size_t index) const {
         return Harmonic{*(phases.get() + index), *(amplitudes.get() + index)};
     }
 
