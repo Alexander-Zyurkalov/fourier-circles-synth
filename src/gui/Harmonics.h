@@ -67,13 +67,12 @@ public:
     }
 
     void rotate(float omega) {
-        std::span<float> phasesSpan{phases.get(), size};
-        std::for_each(phasesSpan.begin(), phasesSpan.end(),
-                         [omega](float& phase){
-                                phase+=omega;
-                                if (phase > juce::MathConstants<float>::pi )
-                                    phase -= 2 * juce::MathConstants<float>::pi;
-                            });
+        for (size_t i = 0; i < size; ++i) {
+            phases.get()[i] += omega;
+            if (phases.get()[i] > juce::MathConstants<float>::pi) {
+                phases.get()[i] -= 2 * juce::MathConstants<float>::pi;
+            }
+        }
         calculate_xy();
     }
 
