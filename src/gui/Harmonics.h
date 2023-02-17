@@ -4,37 +4,36 @@
 
 class Harmonic {
 public:
-    Harmonic(float& phase, float& amplitude)
+    Harmonic(const float& phase, const float& amplitude)
             : phase(phase), amplitude(amplitude)
     {}
 
-    const float &getPhase() const {
+    [[nodiscard]] const float &getPhase() const {
         return phase;
     }
 
-    const float &getAmplitude() const {
+    [[nodiscard]] const float &getAmplitude() const {
         return amplitude;
     }
 
 private:
-    float& phase;
-    float& amplitude;
+    const float& phase;
+    const float& amplitude;
 };
 
 
 class Harmonics {
 public:
-    Harmonics(size_t size, std::unique_ptr<float[]>&& phases, std::unique_ptr<float[]>&& amplitudes)
-            : size(size), phases(std::move(phases)), 
+    Harmonics(const size_t size, std::unique_ptr<float[]>&& phases, std::unique_ptr<float[]>&& amplitudes)
+            : size(size), phases(std::move(phases)),
               amplitudes(std::move(amplitudes))
-//              phasesSpan{phases.get(), size}
     {}
 
-    Harmonic getHarmonic(size_t index) {
-        return Harmonic(*(phases.get() + index), *(amplitudes.get() + index));
+    Harmonic getHarmonic(const size_t index) {
+        return Harmonic{*(phases.get() + index), *(amplitudes.get() + index)};
     }
 
-    size_t getSize() {
+    [[nodiscard]] size_t getSize() const {
         return size;
     }
 
@@ -43,11 +42,8 @@ public:
         std::for_each(phasesSpan.begin(), phasesSpan.end(), [omega](float& v){v+=omega;});
     }
 
-
 private:
-    size_t size;
-    std::unique_ptr<float[]> phases;
-    std::unique_ptr<float[]>  amplitudes;
-//    std::array<float, 7> x{}, y{};
-//    std::span<float> phasesSpan;
+    const size_t size;
+    const std::unique_ptr<float[]> phases;
+    const std::unique_ptr<float[]> amplitudes;
 };
